@@ -21,7 +21,7 @@ namespace APIService.Services
       _queueConsumerService = queueConsumerService;
       _logger = loggerFactory.CreateLogger<QueueService>();
 
-      _queueConsumerService.QueueName = "test-queue";
+      _queueConsumerService.QueueName = "csvtodb-queue";
       _queueConsumerService.ExchangeName ="ExchangeName";
       _queueConsumerService.ExchangeType = "direct";
       _queueConsumerService.RoutingKeyName = string.Empty;

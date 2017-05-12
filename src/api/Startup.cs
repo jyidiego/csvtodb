@@ -11,9 +11,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+
 using Steeltoe.CloudFoundry.Connector.Rabbit;
 using Steeltoe.CloudFoundry.Connector.Redis;
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using Steeltoe.Extensions.Configuration;
+
+using APIService.Models;
 
 namespace APIService
 {
@@ -43,6 +48,9 @@ namespace APIService
             services.AddRedisConnectionMultiplexer(Configuration);
             services.AddRabbitConnection(Configuration);
 
+            // Add Context and use MySql as provider ... provider will be configured from VCAP_ info
+            services.AddDbContext<OrdersContext>(options => options.UseMySql(Configuration));
+
             services.AddSwaggerGen();
 
             services.ConfigureSwaggerGen(options =>
@@ -69,8 +77,9 @@ namespace APIService
             });
 
             services.AddTransient<IMetricsRepository, RedisMetricsRepository>();
-            services.AddTransient<IMessageHandler, LogMessageHandler>();
+            services.AddTransient<IMessageHandler, CsvToDBHandler>();
             services.AddSingleton<IQueueConsumerService, QueueConsumerService>();
+            services.AddSingleton<IQueueProducerService, QueueProducerService>();
             services.AddSingleton<IQueueService, QueueService>();            
         }
 
@@ -88,6 +97,8 @@ namespace APIService
 
             app.UseSwagger()
                 .UseSwaggerUi();
+
+            SampleData.InitializeOrderDatabase(app.ApplicationServices);
         }
     }
 }

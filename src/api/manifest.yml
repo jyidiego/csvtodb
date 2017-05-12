@@ -1,12 +1,13 @@
 ---
 applications:
-- name: apiservice
+- name: csvtodb
+  host: csvtodb
   buildpack: dotnet_core_buildpack
-  random-route: true
   health-check-type: none
   memory: 512M
   services:
-  - rabbitmq
-  - myRedisService
+  - myRabbitService
+  - redis
+  - myMySqlService
   env:
     ASPNETCORE_ENVIRONMENT: Production

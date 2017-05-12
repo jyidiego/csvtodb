@@ -119,6 +119,10 @@ namespace APIService.Tests
            queueConsumerService.EventingBasicConsumer.HandleBasicDeliver("", It.IsAny<ulong>(), false, 
             "ExchangeName", "RoutingKeyName", null, Encoding.ASCII.GetBytes("the message body"));
         }
+
+        public void WriteToDatabase()
+        {
+        }
     }
 
     public class BasicDeliverEventArgsWrapper : BasicDeliverEventArgs
