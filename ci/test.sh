@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pushd ./DataFormatConverter/test
+pushd ./csvtodb/test/api
     dotnet restore
     dotnet test
     ret_code=$?
