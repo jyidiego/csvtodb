@@ -29,7 +29,7 @@ namespace APIService.Models
                 if (DataExists<Order>(db))
                     return;
 
-                AddData<Order>(db, new Order() {AccountId = 0,
+                AddData<Order>(db, new Order() {AccountId = "XYZ",
                                                 InstrumentId = 0,
                                                 TNumber = 0,
                                                 TVersion = 0,
