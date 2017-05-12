@@ -20,12 +20,13 @@ namespace APIService.Handlers
     private ILogger<CsvToDBHandler> _logger; 
     private Converter _converter;
     private IServiceProvider _serviceProvider;
+    private OrdersContext _db;
 
-    public CsvToDBHandler(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+    public CsvToDBHandler(OrdersContext db, ILoggerFactory loggerFactory)
     {
         _logger = loggerFactory.CreateLogger<CsvToDBHandler>();
-        _serviceProvider = serviceProvider;
         _converter = new Converter();
+        _db = db;
     }
 
     public bool Handle(string message)
@@ -34,23 +35,19 @@ namespace APIService.Handlers
         var results = _converter.CSV_to_Order(message);  
         _logger.LogInformation($"CsvToDB Message Handler: {results}");
 
-        using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-        {
 
-            var db = serviceScope.ServiceProvider.GetService<OrdersContext>();
-            foreach ( TOrder result in results )
-            {
-                AddData<Order>(db, new Order() {AccountId = result.AccountId,
-                                                InstrumentId = result.InstrumentId,
-                                                TNumber = result.TNumber,
-                                                TVersion = result.TVersion,
-                                                TAction = result.TAction,
-                                                CorrectFlag = result.CorrectFlag,
-                                                CancelFlag = result.CancelFlag,
-                                                NDDFlag = result.NDDFlag });
-            }
-            db.SaveChanges();
+        foreach ( TOrder result in results )
+        {
+            AddData<Order>(_db, new Order() {AccountId = result.AccountId,
+                                            InstrumentId = result.InstrumentId,
+                                            TNumber = result.TNumber,
+                                            TVersion = result.TVersion,
+                                            TAction = result.TAction,
+                                            CorrectFlag = result.CorrectFlag,
+                                            CancelFlag = result.CancelFlag,
+                                            NDDFlag = result.NDDFlag });
         }
+        _db.SaveChanges();
         return true;
     }
 

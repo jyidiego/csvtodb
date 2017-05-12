@@ -18,11 +18,5 @@ namespace APIService.Models
                                         o.CorrectFlag,
                                         o.CancelFlag } );
         }
-        
-        /*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder
-                .UseMySql(@"Server=localhost;database=ef;uid=root;pwd=123456;");
-        */
     }
 }
