@@ -16,10 +16,8 @@ namespace APIService.Handlers
 {
   public class CsvToDBHandler : IMessageHandler
   {
-    private ConnectionFactory _connectionFactory;
     private ILogger<CsvToDBHandler> _logger; 
     private Converter _converter;
-    private IServiceProvider _serviceProvider;
     private OrdersContext _db;
 
     public CsvToDBHandler(OrdersContext db, ILoggerFactory loggerFactory)
