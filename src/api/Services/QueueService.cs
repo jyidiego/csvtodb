@@ -26,7 +26,7 @@ namespace APIService.Services
 			_queueConsumerService.QueueName = config.Value.InQueueName;
 			_queueConsumerService.ExchangeName = config.Value.ExchangeName;
 			_queueConsumerService.ExchangeType = config.Value.ExchangeType;
-			_queueConsumerService.RoutingKeyName = config.Value.RoutingKeyName;
+			_queueConsumerService.RoutingKeyName = config.Value.InRoutingKeyName;
 			_queueConsumerService.Connect(_connectionFactory);
 
 		}

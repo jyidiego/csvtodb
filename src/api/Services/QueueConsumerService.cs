@@ -200,7 +200,7 @@ namespace APIService.Services
         // BasicQos(0="Dont send me a new message untill I’ve finshed",  1= "Send me one message at a time", false ="Apply to this Model only")
         Model.BasicQos(0, 1, false);
  
-        const bool durable = true, exchangeAutoDelete = true, queueAutoDelete = false, exclusive = false;
+        const bool durable = true, exchangeAutoDelete = false, queueAutoDelete = false, exclusive = false;
  
         // Create a new, durable exchange, and have it auto delete itself as long as an exchange name has been provided.
         if (!string.IsNullOrWhiteSpace(ExchangeName))

@@ -23,7 +23,9 @@ namespace APIService.Services
 
 		public string ExchangeType { get; set; }
 
-		public string RoutingKeyName { get; set; }
+		public string InRoutingKeyName { get; set; }
+
+		public string OutRoutingKeyName { get; set; }
 
   }
 }
