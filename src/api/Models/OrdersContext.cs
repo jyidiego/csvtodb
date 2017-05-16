@@ -4,10 +4,14 @@ namespace APIService.Models
 {
     public class OrdersContext : DbContext
     {
+        public OrdersContext () : base()
+        {
+
+        }
         public OrdersContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

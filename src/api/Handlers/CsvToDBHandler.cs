@@ -36,7 +36,7 @@ namespace APIService.Handlers
 
         foreach ( TOrder result in results )
         {
-            AddData<Order>(_db, new Order() {AccountId = result.AccountId,
+            _db.Orders.Add(new Order() {AccountId = result.AccountId,
                                             InstrumentId = result.InstrumentId,
                                             TNumber = result.TNumber,
                                             TVersion = result.TVersion,
@@ -44,14 +44,11 @@ namespace APIService.Handlers
                                             CorrectFlag = result.CorrectFlag,
                                             CancelFlag = result.CancelFlag,
                                             NDDFlag = result.NDDFlag });
+
+           
         }
         _db.SaveChanges();
         return true;
-    }
-
-    private static void AddData<TData>(DbContext db, object item) where TData: class
-    {
-        db.Entry(item).State = EntityState.Added;
     }
   }
 }
