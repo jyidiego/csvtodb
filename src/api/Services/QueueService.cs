@@ -11,10 +11,12 @@ namespace APIService.Services
 {
 	public class QueueService : IQueueService
 	{
+		private bool _processing;
 		private ConnectionFactory _connectionFactory;
 		private IQueueConsumerService _queueConsumerService;
 		private ILogger<QueueService> _logger;
 		private Dictionary<string, IMessageHandler> _handlers;
+		private static object _lock;
 		public QueueService(IQueueConsumerService queueConsumerService, ConnectionFactory rabbitConnection, ILoggerFactory loggerFactory, IOptions<DataFlowServiceConfig> config)
 		{
 			_connectionFactory = rabbitConnection;
@@ -28,6 +30,7 @@ namespace APIService.Services
 			_queueConsumerService.ExchangeType = config.Value.ExchangeType;
 			_queueConsumerService.RoutingKeyName = config.Value.InRoutingKeyName;
 			_queueConsumerService.Connect(_connectionFactory);
+			_processing = false;
 
 		}
 
@@ -55,8 +58,18 @@ namespace APIService.Services
 
 		public void ProcessQueue()
 		{
-			_queueConsumerService.ReadFromQueue(ProcessMessage, RaiseException, _queueConsumerService.ExchangeName,
-			  _queueConsumerService.QueueName, _queueConsumerService.RoutingKeyName);
+			lock(_lock)
+			{
+				_processing = true;
+				_queueConsumerService.ReadFromQueue(ProcessMessage, RaiseException, _queueConsumerService.ExchangeName,
+			  	_queueConsumerService.QueueName, _queueConsumerService.RoutingKeyName);
+			}		
+			  
+		}
+
+		public bool IsProcessing()
+		{
+			return _processing;
 		}
 
 		public void RegisterHandler(IMessageHandler handler)

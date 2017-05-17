@@ -14,6 +14,8 @@ namespace APIService.Services
     void RegisterHandler(IMessageHandler handler);
 
     void RegisterHandlers(IEnumerable<IMessageHandler> handlers);
+
+    bool IsProcessing();
     
   }
 }

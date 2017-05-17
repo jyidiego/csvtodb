@@ -16,7 +16,11 @@ namespace APIService.Extensions
         if(handlers != null)
             queueService.RegisterHandlers(handlers);
             
-        queueService.ProcessQueue();
+        if(!queueService.IsProcessing())
+        {
+            queueService.ProcessQueue();
+        }
+            
     }
 }
 }
