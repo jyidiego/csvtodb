@@ -16,7 +16,7 @@ namespace APIService.Services
 		private IQueueConsumerService _queueConsumerService;
 		private ILogger<QueueService> _logger;
 		private Dictionary<string, IMessageHandler> _handlers;
-		private static object _lock;
+		private static object _lock = new object();
 		public QueueService(IQueueConsumerService queueConsumerService, ConnectionFactory rabbitConnection, ILoggerFactory loggerFactory, IOptions<DataFlowServiceConfig> config)
 		{
 			_connectionFactory = rabbitConnection;
